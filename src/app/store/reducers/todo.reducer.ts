@@ -1,38 +1,39 @@
 import {
-  ActionReducer,
-  ActionReducerMap,
-  createFeatureSelector, createReducer,
-  createSelector,
-  MetaReducer, on
+  Action,
+  createReducer,
+  on
 } from '@ngrx/store';
-import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
+import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 import {Todo} from '../models/Todo';
-import {addTodo, removeTodo, doneTodo, getTodos} from '../actions/todo.actions';
+import * as todoActions from '../actions/todo.actions';
 
-export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({});
 
-export interface AppState {
-  todos: Todo[];
+export interface State extends EntityState<Todo> {
+  todos: Array<Todo>;
 }
-
-const initialState = todoAdapter.getInitialState({
+export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>();
+export const initialState: State = todoAdapter.getInitialState({
   todos: []
 });
 
-export const allTodos = (state: AppState) => state.todos;
 
 export const todoReducer = createReducer(
   initialState,
-  on(addTodo, (state, { todo }) => {
+  on(todoActions.addTodo, (state, { todo }) => {
+    console.log(state);
     return todoAdapter.addOne(todo, state);
   }),
-  on(removeTodo, (state, { id }) => {
+  on(todoActions.removeTodo, (state, { id }) => {
     return todoAdapter.removeOne(id, state);
   }),
-  on(doneTodo, (state, { id }) => {
+  on(todoActions.doneTodo, (state, { id }) => {
     return todoAdapter.removeOne(id, state);
   }),
-  on(getTodos, (state, { todos }) => {
-    return {...todos, ...state};
+  on(todoActions.getTodos, (state) => {
+    return {...state };
   })
 );
+
+export function reducer(state: State | undefined, action: Action) {
+  return todoReducer(state, action);
+}

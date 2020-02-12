@@ -22,6 +22,6 @@ export const doneTodo = createAction(
 );
 
 export const getTodos = createAction(
-  ActionTypes.GET_TODO, props<{todos: Todo[]}>()
+  ActionTypes.GET_TODO
 );
 

@@ -1,23 +1,36 @@
-import { Component } from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {Todo} from './store/models/Todo';
 import {RootStoreConfig, select, Store} from '@ngrx/store';
-import {addTodo, removeTodo, doneTodo, getTodos} from './store/actions/todo.actions';
-import {allTodos} from './store/reducers/todo.reducer';
+import * as todoActions from './store/actions/todo.actions';
+import {State} from './store/reducers/todo.reducer';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'TodoApp';
-  todos$: Observable<any>;
+  todos$: Observable<State>;
+  todos: Todo[] = [];
+  todoSubscription: Subscription;
   text: string;
-  constructor(private store: Store<{todo: Todo}>) {
-    // this.todos$ = store.select<Todo[]>(getTodos);
-    // this.todos$ = store.pipe(select({getTodos}));
-    // this.todos$ = store.pipe(select(allTodos));
+  constructor(private store: Store<{todos: State}>) {
+    this.todos$ = store.pipe(select('todos'));
+  }
+
+  ngOnInit() {
+    this.todoSubscription = this.todos$.pipe(
+      map(data => {
+          if (typeof data !== 'undefined') {
+            this.todos = data.todos;
+          }
+        }
+      )
+    ).subscribe();
+    this.store.dispatch(todoActions.getTodos());
   }
 
   addTodo() {
@@ -28,6 +41,6 @@ export class AppComponent {
       status: 'New'
     };
     console.log(this.todos$);
-    this.store.dispatch(addTodo({todo: newTodo}));
+    this.store.dispatch(todoActions.addTodo({todo: newTodo}));
   }
 }
