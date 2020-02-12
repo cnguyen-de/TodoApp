@@ -1,38 +1,33 @@
 import {
-  ActionReducer,
-  ActionReducerMap,
-  createFeatureSelector, createReducer,
-  createSelector,
-  MetaReducer, on
+  Action,
+  createReducer,
+  on
 } from '@ngrx/store';
-import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
-import {Todo} from '../models/Todo';
-import {addTodo, removeTodo, doneTodo, getTodos} from '../actions/todo.actions';
+import Todo from '../models/Todo';
+import State, { initializeState } from '../models/todo.states';
+import * as todoActions from '../actions/todo.actions';
 
-export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({});
-
-export interface AppState {
-  todos: Todo[];
-}
-
-const initialState = todoAdapter.getInitialState({
-  todos: []
-});
-
-export const allTodos = (state: AppState) => state.todos;
+export const initialState = initializeState();
 
 export const todoReducer = createReducer(
   initialState,
-  on(addTodo, (state, { todo }) => {
-    return todoAdapter.addOne(todo, state);
+  on(todoActions.addTodo, (state, { todo }) => {
+    return {...state, todos: [...state.todos, todo]};
   }),
-  on(removeTodo, (state, { id }) => {
-    return todoAdapter.removeOne(id, state);
+  on(todoActions.removeTodo, (state, { id }) => {
+    console.log(state.todos);
+    const index = state.todos.findIndex(x => x.id === id);
+    console.log(index);
+    let newTodos = state.todos.slice();
+    if (index !== undefined) {
+      newTodos.splice(index, 1);
+      console.log(newTodos);
+    }
+    return {...state, todos: { ...newTodos }};
   }),
-  on(doneTodo, (state, { id }) => {
-    return todoAdapter.removeOne(id, state);
-  }),
-  on(getTodos, (state, { todos }) => {
-    return {...todos, ...state};
-  })
+  on(todoActions.getTodos, state => state)
 );
+
+export function ToDoReducer(state: State | undefined, action: Action) {
+  return todoReducer(state, action);
+}

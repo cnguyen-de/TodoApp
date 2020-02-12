@@ -1,7 +1,10 @@
 <label>
-  <input [(ngModel)]="text">
+  <input [(ngModel)]="text" (keydown.enter)="addTodo()">
 </label>
 <button (click)="addTodo()">add todo</button>
-<div>
-  <li *ngFor="let todo of todos$ | async">{{todo.text}}</li>
+<div *ngFor="let todo of todos">
+  <div style="border: 1px solid black; margin: 10px;" (click)="removeTodo(todo.id)">
+    <h2>{{todo.text}}</h2>
+    <p>{{todo.status}}</p>
+  </div>
 </div>

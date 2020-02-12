@@ -14,7 +14,7 @@ import {FormsModule} from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot(todoReducer, {
+    StoreModule.forRoot({todos: todoReducer}, {
       runtimeChecks: {
         strictStateImmutability: true,
         strictActionImmutability: true,
