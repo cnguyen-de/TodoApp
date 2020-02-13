@@ -10,7 +10,8 @@
     <mat-grid-tile (click)="removeTodo(todo.id)" colspan="3" class="text">
           <p>{{todo.text}}</p>
     </mat-grid-tile>
-    <mat-grid-tile colspan="1" class="status-red" (click)="doneTodo(todo.id)" [ngClass]="{'status-green': todo.status == 'Done'}">
+    <mat-grid-tile colspan="1" class="status status-red" (click)="doneTodo(todo.id)"
+                   [ngClass]="{'status-green': todo.status == 'Done'}">
       {{todo.status}}
     </mat-grid-tile>
   </mat-grid-list>
