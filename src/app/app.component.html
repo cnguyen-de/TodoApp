@@ -1,8 +1,8 @@
 <div>
   <mat-form-field>
-    <input matInput [(ngModel)]="text" (keydown.enter)="addTodo()">
+    <input matInput [(ngModel)]="text" (keydown.enter)="addTodo()" autocomplete="off" #input>
   </mat-form-field>
-  <button mat-button (click)="addTodo()">add todo</button>
+  <button mat-button (click)="addTodo()">Add</button>
 </div>
 
 <div *ngFor="let todo of todos">

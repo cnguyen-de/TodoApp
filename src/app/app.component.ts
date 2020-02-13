@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import Todo from './store/models/Todo';
-import {RootStoreConfig, select, Store} from '@ngrx/store';
+import { select, Store} from '@ngrx/store';
 import * as todoActions from './store/actions/todo.actions';
 import State from './store/models/todo.states';
 import {map} from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   todoSubscription: Subscription;
   todos: Todo[] = [];
   text: string;
-
+  @ViewChild('input') inputElem: ElementRef;
   constructor(private store: Store<{ todos: State }>) {
     this.todos$ = store.pipe(select('todos'));
   }
@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
       text: this.text,
       status: 'Todo'
     };
-    console.log(this.todos$);
     this.store.dispatch(todoActions.addTodo({todo: newTodo}));
+    this.inputElem.nativeElement.value = '';
   }
 
   removeTodo(id) {

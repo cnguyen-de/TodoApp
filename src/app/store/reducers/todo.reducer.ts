@@ -3,7 +3,6 @@ import {
   createReducer,
   on
 } from '@ngrx/store';
-import Todo from '../models/Todo';
 import State, { initializeState } from '../models/todo.states';
 import * as todoActions from '../actions/todo.actions';
 
@@ -15,6 +14,7 @@ export const todoReducer = createReducer(
   on(todoActions.addTodo, (state, { todo }) => {
     return {...state, todos: [...state.todos, todo]};
   }),
+
 
   on(todoActions.removeTodo, (state, { id }) => {
     const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
@@ -34,10 +34,11 @@ export const todoReducer = createReducer(
     return {...state, todos: [ ...state.todos ]};
   }),
 
-/* this is for when runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true,
-      }
+/* this is for when
+ *     runtimeChecks: {
+ *       strictStateImmutability: true,
+ *       strictActionImmutability: true,
+ *     }
 
   on(todoActions.removeTodo, (state, { id }) => {
     const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
