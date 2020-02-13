@@ -1,10 +1,17 @@
-<label>
-  <input [(ngModel)]="text" (keydown.enter)="addTodo()">
-</label>
-<button (click)="addTodo()">add todo</button>
+<div>
+  <mat-form-field>
+    <input matInput [(ngModel)]="text" (keydown.enter)="addTodo()">
+  </mat-form-field>
+  <button mat-button (click)="addTodo()">add todo</button>
+</div>
+
 <div *ngFor="let todo of todos">
-  <div style="border: 1px solid black; margin: 10px;" (click)="removeTodo(todo.id)">
-    <h2>{{todo.text}}</h2>
-    <p>{{todo.status}}</p>
-  </div>
+  <mat-grid-list cols="4" rowHeight="2:1" class="todo-item">
+    <mat-grid-tile (click)="removeTodo(todo.id)" colspan="3" class="text">
+          <p>{{todo.text}}</p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" class="status-red" (click)="doneTodo(todo.id)" [ngClass]="{'status-green': todo.status == 'Done'}">
+      {{todo.status}}
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

@@ -2,9 +2,10 @@ import {createAction, props} from '@ngrx/store';
 import Todo from '../models/Todo';
 
 export enum ActionTypes {
-  ADD_TODO = '[Action] Add TODO',
-  REMOVE_TODO = '[Action] Remove TODO',
-  GET_TODO = '[Action] Get TODO'
+  ADD_TODO = '[Main Page] Add TODO',
+  REMOVE_TODO = '[Main Page] Remove TODO',
+  DONE_TODO = '[Main Page] Done TODO',
+  GET_TODO = '[Main Page] Get TODO'
 }
 
 export const addTodo = createAction(
@@ -13,6 +14,10 @@ export const addTodo = createAction(
 
 export const removeTodo = createAction(
   ActionTypes.REMOVE_TODO, props<{id: string}>()
+);
+
+export const doneTodo = createAction(
+  ActionTypes.DONE_TODO, props<{id: string}>()
 );
 
 export const getTodos = createAction(

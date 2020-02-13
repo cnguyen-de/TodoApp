@@ -11,20 +11,58 @@ export const initialState = initializeState();
 
 export const todoReducer = createReducer(
   initialState,
+
   on(todoActions.addTodo, (state, { todo }) => {
     return {...state, todos: [...state.todos, todo]};
   }),
+
   on(todoActions.removeTodo, (state, { id }) => {
-    console.log(state.todos);
-    const index = state.todos.findIndex(x => x.id === id);
-    console.log(index);
-    let newTodos = state.todos.slice();
+    const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
+    if (index !== undefined) {
+      state.todos.splice(index, 1);
+    }
+    return {...state, todos: [ ...state.todos ]};
+  }),
+
+  on(todoActions.doneTodo, (state, { id }) => {
+    const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
+    if (index !== undefined && state.todos[index].status !== 'Done') {
+      state.todos[index].status = 'Done';
+    } else if ((index !== undefined && state.todos[index].status === 'Done')) {
+      state.todos.splice(index, 1);
+    }
+    return {...state, todos: [ ...state.todos ]};
+  }),
+
+/* this is for when runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+      }
+
+  on(todoActions.removeTodo, (state, { id }) => {
+    const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
+    const newTodos = state.todos.slice(); // make a copy because state.todos is fucking immutable
     if (index !== undefined) {
       newTodos.splice(index, 1);
-      console.log(newTodos);
     }
-    return {...state, todos: { ...newTodos }};
+    return {...state, todos: [ ...newTodos ]};
   }),
+
+  on(todoActions.doneTodo, (state, { id }) => {
+    const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
+    const newTodos = state.todos.slice(); // make a copy because state.todos is fucking immutable
+    if (index !== undefined) {
+
+      const newTodo = JSON.parse(JSON.stringify(newTodos[index]));
+      newTodo.status = 'Done';
+      console.log(newTodo);
+      newTodos.splice(index, 1); // has this is so stupid?
+      newTodos.push(newTodo);
+    }
+    return {...state, todos: [ ...newTodos ]};
+  }),
+*/
+
   on(todoActions.getTodos, state => state)
 );
 

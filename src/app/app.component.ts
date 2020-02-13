@@ -37,13 +37,17 @@ export class AppComponent implements OnInit {
       // tslint:disable-next-line:new-parens
       id: Number(new Date).toString(36),
       text: this.text,
-      status: 'New'
+      status: 'Todo'
     };
     console.log(this.todos$);
     this.store.dispatch(todoActions.addTodo({todo: newTodo}));
   }
 
   removeTodo(id) {
-    this.store.dispatch(todoActions.removeTodo({id: id}));
+    this.store.dispatch(todoActions.removeTodo({id}));
+  }
+
+  doneTodo(id) {
+    this.store.dispatch(todoActions.doneTodo({id}));
   }
 }
