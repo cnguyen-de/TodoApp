@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "tailwind": "./node_modules/.bin/tailwind build ./src/tailwind.min.css -c ./tailwind.config.js -o ./src/styles.css",
+    "prestart": "npm run tailwind"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +28,7 @@
     "@ngrx/store": "^8.6.0",
     "@ngrx/store-devtools": "^8.6.0",
     "rxjs": "~6.5.4",
+    "tailwindcss": "^1.2.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
