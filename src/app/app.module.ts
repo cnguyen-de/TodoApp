@@ -13,13 +13,19 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { EmptyComponent } from './components/empty/empty.component';
+import {AppRoutingModule} from './app-routing.module';
+import { TodoComponent } from './components/todo/todo.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EmptyComponent,
+    TodoComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     StoreModule.forRoot({todos: todoReducer}, {
         runtimeChecks: {
           strictStateImmutability: true,

@@ -46,18 +46,16 @@ export const todoReducer = createReducer(
 
   on(todoActions.doneTodo, (state, { id }) => {
     const index = state.todos.findIndex(x => x.id === id); // find index of the to-be-removed item
-    const newTodos = state.todos.slice(); // make a copy because state.todos is  immutable
+    const newTodos = state.todos.slice(); // make a copy because state.todos is immutable
     if (index !== undefined) {
 
       const newTodo = JSON.parse(JSON.stringify(newTodos[index]));
       newTodo.status = 'Done';
       console.log(newTodo);
-      newTodos.splice(index, 1);
-      newTodos.push(newTodo);
+      newTodos.splice(index, 1, newTodo);
     }
     return {...state, todos: [ ...newTodos ]};
   }),
-
 
   on(todoActions.getTodos, state => state)
 );

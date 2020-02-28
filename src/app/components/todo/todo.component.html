@@ -1,0 +1,22 @@
+<div>
+  <mat-form-field>
+    <input matInput [(ngModel)]="text" (keydown.enter)="addTodo()" autocomplete="off" #input>
+  </mat-form-field>
+  <button mat-button (click)="addTodo()">Add</button>
+</div>
+
+<div *ngFor="let todo of todos">
+  <mat-grid-list cols="4" rowHeight="2:1" class="todo-item">
+    <mat-grid-tile (click)="removeTodo(todo.id)" colspan="3" class="text">
+      <p>{{todo.text}}</p>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" class="status status-red" (click)="removeTodo(todo.id)"
+                   *ngIf="todo.status == 'Done'">
+      {{todo.status}}
+    </mat-grid-tile>
+    <mat-grid-tile colspan="1" class="status status-green" (click)="doneTodo(todo.id)"
+                   *ngIf="todo.status != 'Done'">
+      {{todo.status}}
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
